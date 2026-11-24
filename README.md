@@ -1,53 +1,55 @@
-# 镜作 · RH Video Replica
+**English** | [简体中文](README.zh-CN.md)
 
-**把真实广告的镜头功能、节奏与视觉递进，改编为新商品广告。**
+# RH Video Replica · 镜作
 
-一个供 Codex、WorkBuddy、DeepSeek Harness 等工具型 Agent 使用的 Skill：从参考分析、分镜约定、RunningHub 生成，到品牌排版、声音合成与验收记录。
+**Turn the shot functions, pacing, and visual progression of a real ad into an ad for a new product.**
 
-> 当前是有真实样例的 V2 验证版。它需要 Agent 理解与审片，不承诺任意广告逐帧一致、人物动作模仿或无人验收的一键商用。
+An agent Skill for Codex, WorkBuddy, and DeepSeek Harness: connect reference analysis and storyboard agreements with RunningHub generation, precise brand typography, audio composition, and documented review.
 
-![MELLOW 概念咖啡广告落版](demo/mellow/poster.jpg)
+> V2 includes a real worked example. The workflow needs an agent to interpret and review footage. It does not promise frame-exact recreation of arbitrary ads, character motion imitation, or unattended commercial-ready output.
 
-**[观看 15 秒演示 MP4](https://github.com/ultimatech-cn/rh-video-replica/raw/refs/heads/main/demo/mellow/final.mp4)** · **[详细案例](docs/CASE_STUDY.md)** · **[下载 Skill 安装包](https://github.com/ultimatech-cn/rh-video-replica/releases/latest)** · **[Skill 指令入口](SKILL.md)**
+![MELLOW concept coffee ad end card](demo/mellow/poster.jpg)
 
-## 能做什么
+**[Watch the 15-second MP4](https://github.com/ultimatech-cn/rh-video-replica/raw/refs/heads/main/demo/mellow/final.mp4)** · **[Detailed case · 中文](docs/CASE_STUDY.md)** · **[Download the Skill](https://github.com/ultimatech-cn/rh-video-replica/releases/latest)** · **[Agent instructions · 中文](SKILL.md)**
 
-| 输入 | 处理 | 交付 |
+## What it does
+
+| Input | Workflow | Deliverable |
 |---|---|---|
-| 本地真实参考广告 | 抽帧、候选切点与画面分析 | 来源、时间证据与参考观察 |
-| 商品图片与已核实卖点 | 保留镜头功能，改写商品与场景 | 按时间组织的改编分镜与验收条件 |
-| 时长、比例、生成方式 | 上传素材、提交/恢复 RH 任务 | 任务记录、费用与原始生成 |
-| 云端画面、品牌文案、音轨 | 剪辑、准确排字、合成声音 | H.264/AAC MP4、编辑计划、技术 QC |
-| 实际输出 | Agent 逐段审片与修复 | 通过、部分符合、失败及处理记录 |
+| Local real-world reference ad | Frame extraction, candidate cuts, and visual analysis | Source notes, timestamped evidence, and observations |
+| Product images and verified selling points | Retain shot functions while adapting the product and setting | Timed storyboard and acceptance criteria |
+| Duration, aspect ratio, generation mode | Upload inputs; submit or resume RunningHub tasks | Task records, costs, and raw generated footage |
+| Cloud footage, brand copy, and audio | Edit footage, render accurate typography, and mix sound | H.264/AAC MP4, edit plan, and technical QC |
+| Actual output | Agent review and repair by segment | Pass, partial match, or failure with follow-up records |
 
-脚本负责确定性执行；Agent 负责视觉理解、改编决策和内容验收。候选切点不是已确认镜头，技术 QC 通过也不代表广告内容合格。
+Scripts handle deterministic execution. The agent handles visual interpretation, adaptation decisions, and content review. Candidate cuts are not confirmed shots; passing technical QC does not establish that the ad meets its creative requirements.
 
-## 两种生成方式
+## Two generation modes
 
-| 模式 | 模型收到什么 | 适合什么 | 实测发现 |
+| Mode | What the model receives | Best fit | Observed behavior |
 |---|---|---|---|
-| `reference_video_and_product` | 真实广告片段 + 新商品图 + 提示词 | 有相应使用依据、希望较强保留参考结构 | 可能连原场景与人物也保留，必须审片 |
-| `storyboard_and_product` | 新商品图 + Agent 根据参考改写的分镜 | 需要新场景、换品牌和去除原人物 | 本案例最终采用；模型没有直接接收原视频 |
+| `reference_video_and_product` | Real ad excerpt + new product image + prompt | Stronger structural retention when the reference can be used | May also retain the original scene and people; review required |
+| `storyboard_and_product` | New product image + an agent-written storyboard derived from the reference | New settings, a different brand, and removal of original people | Used for the final demo; the model did not directly receive the reference video |
 
-模式必须显式对应输入。不会把“模型未收到原视频”写成“模型看过原片”，也不会把未完成的任务称为成功。
+The recorded mode must match the actual inputs. Do not describe a model as having seen a video it was never given, or an unfinished task as successful.
 
-## 演示：真实雀巢广告 → MELLOW 概念咖啡
+## Demo: a real NESCAFÉ ad → MELLOW concept coffee
 
-参考是 **NESCAFÉ — The Life of a Coffee Bean**，Kancil Awards 2022 **Cinematography: Single 银奖**，原片 75 秒。[作品与制作信息来源](https://kancilawards.com/winners/entry/2022/6539)
+The reference is **NESCAFÉ — The Life of a Coffee Bean**, a 75-second film awarded **Silver in Cinematography: Single at Kancil Awards 2022**. [Original work and production credits](https://kancilawards.com/winners/entry/2022/6539)
 
-本次只选 **47–62 秒工艺段**，拆为“翻豆 → 取样 → 空间建立 → 操作检查 → 研磨转化 → 新商品落版”。这是 15 秒选段改编，**没有完整复刻 75 秒原片**。
+Only the **47–62 second process segment** was selected: “bean turning → sampling → establishing the space → operational inspection → grinding transformation → new product end card.” This is a **15-second excerpt adaptation**, not a recreation of the full 75-second film.
 
-- 第一轮直接给模型参考视频和商品图：结构保留较强，但留下原人物脸，未作为最终成片。
-- 第二轮根据拆解分镜生成新场景：前 **11.4 秒**使用这次云端视频；后 **3.6 秒**用核对过的商品主视觉做轻微拉远、准确排字，再加入原创合成配乐。
-- 输出 **1280×720、16:9、30fps、15 秒**，完整解码、时长、黑场检查通过。
-- 六段均有内容对应；人工/Agent 判定三段符合意图、三段部分符合。蒸汽缺失、取样器具的驱动关系、研磨颗粒与实机感仍有偏差。这是单例评审，**不是泛化“复刻率”**。
-- 本例两轮 RH 视频实际费用 **¥12.6 + ¥6.3 = ¥18.9**，记录于 2026-11-23。当前价格以服务页面与账单为准，不含 Agent、图片生成或其他服务成本。
+- **Round 1:** supply the reference excerpt and product image directly. The result retained more of the structure but also kept an original person's face, so it was not used as the final film.
+- **Round 2:** generate new scenes from the adapted storyboard. The final edit uses **11.4 seconds** of this cloud output, followed by a **3.6-second** product end card made from a checked product image, a subtle pullback, exact typography, and original synthesized music.
+- **Output:** 1280×720, 16:9, 30 fps, 15 seconds. Full decoding, duration, and black-frame checks passed.
+- All six segments have an intended counterpart. The manual/agent review rated three as matching the intent and three as partial matches. Missing steam, the sampling tool's movement, and the grinding texture/machinery realism remain imperfect. This is a single-case review, **not a general recreation success rate**.
+- The two RunningHub video generations cost **CNY 12.6 + CNY 6.3 = CNY 18.9**, recorded on November 23, 2026. This excludes agent, image-generation, and other service costs. Live prices follow the service page and billing record.
 
-演示素材见 [demo/mellow](demo/mellow)，包括成片、第二轮原始生成、商品图、提示词、编辑计划和验收 JSON。原广告、原音轨和原片抽帧不随仓库发布。
+[demo/mellow](demo/mellow) includes the final video, second-round raw footage, product image, prompts, edit plan, and review JSON. The original ad, its audio, and extracted reference frames are not distributed in this repository.
 
-## 安装
+## Install
 
-Python **3.10+**。推荐使用虚拟环境：
+Requires **Python 3.10+**. A virtual environment is recommended:
 
 ```bash
 git clone https://github.com/ultimatech-cn/rh-video-replica.git
@@ -58,96 +60,97 @@ python -m pip install -r requirements.txt
 python scripts/replica.py doctor
 ```
 
-有系统 FFmpeg 时优先使用，否则使用 `imageio-ffmpeg` 自带版本。中文排字在 macOS 自动寻找字体；其他系统请设置 `VIDEO_FONT` 为已安装中文字体的路径。
+The workflow prefers system FFmpeg and otherwise uses the version bundled with `imageio-ffmpeg`. On macOS it searches for a Chinese font automatically. On other systems, set `VIDEO_FONT` to the path of an installed Chinese font when rendering Chinese copy.
 
-将 Release 中的 `rh-video-replica-skill-v2.0.0.zip` 导入宿主，或把根目录下的 Skill 文件复制到相应目录：
+Import `rh-video-replica-skill-v2.0.0.zip` from the release into your host, or copy the root Skill files into its Skill directory:
 
-| 宿主 | 安装方式 | 验证范围 |
+| Host | Installation | Recorded status |
 |---|---|---|
-| Codex | `~/.codex/skills/rh-video-replica/`，目录下直接有 `SKILL.md` | 本项目制作与脚本执行使用 Codex |
-| DeepSeek Harness | 项目 `.dsh/skills/rh-video-replica/` | 目录适配已准备，未做目标会话导入触发验收 |
-| WorkBuddy | 技能 → 添加/上传技能 → 选择 Skill ZIP | 参考官方安装说明，未做客户端导入触发验收 |
+| Codex | `~/.codex/skills/rh-video-replica/`, containing `SKILL.md` directly | Used for project production and script execution |
+| DeepSeek Harness | Project `.dsh/skills/rh-video-replica/` | Directory adaptation prepared; target-session import/triggering not validated |
+| WorkBuddy | Skills → add/upload Skill → select the Skill ZIP | Based on official installation guidance; client import/triggering not validated |
 
-具体入口可能随客户端版本调整，见 [安装说明与官方来源](references/installation.md)。不要把整个大型项目目录当作 Skill 安装包。
+Client entry points may change; see [installation notes and official sources · 中文](references/installation.md). Do not use the entire large project directory as a Skill installation package. The agent instructions and detailed references currently remain in Chinese; an English invocation can request English deliverables.
 
-## 怎样让 Agent 使用
+## Ask your agent to use it
 
 ```text
-使用 rh-video-replica。
-参考广告：/absolute/path/reference.mp4，分析其中 12–27 秒。
-新商品图：/absolute/path/product.png。
-输出：15 秒、16:9；卖点仅使用我提供的事实。
-希望更换原场景与人物，采用 storyboard_and_product。
-先给出来源、逐段观察、改编约定和费用预估；生成后交付 MP4、
-提示词、编辑计划、实际费用及内容/技术验收，明确未通过项。
+Use rh-video-replica. Reply and deliver the documents in English.
+Reference ad: /absolute/path/reference.mp4; analyze seconds 12–27.
+New product image: /absolute/path/product.png.
+Output: 15 seconds, 16:9. Use only the product facts I provide.
+Replace the original setting and people using storyboard_and_product.
+First provide the source, segment observations, adaptation agreement,
+and estimated cost. After generation, deliver the MP4, prompts, edit plan,
+actual costs, and content/technical review, identifying unmet requirements.
 ```
 
-宿主需要查看本地图片、执行 Python 和保存文件；要自行调用云端，还需要本机配置 API Key。仅有聊天能力的宿主不能完成整个视频交付。
+The host needs local image access, Python execution, and file output. Cloud calls also require a locally configured API key. A text-only host cannot complete the full video delivery.
 
-## 本地先跑一遍，不产生 RH 新任务
+## Rebuild locally without creating a new RunningHub task
 
 ```bash
-# 验证示例分镜的时间、范围和商品主张
+# Validate the sample storyboard timing, scope, and product claims
 python scripts/ad_audit.py validate demo/mellow/adaptation-contract.json \
   --out output/contract-validation.json
 
-# 用仓库内已有生成素材重新剪辑、排字、配乐
+# Re-edit existing repository footage, typography, and music
 python scripts/replica.py render demo/mellow/edit-plan.json --out output/mellow
 
-# 检查交付成片
+# Check the final video
 python scripts/replica.py qc output/mellow/final.mp4 --expected 15 \
   --out output/mellow/check.json
 
-# 28 项本地测试，不调用收费 API
+# Run the 28 local tests without paid API calls
 python -m unittest discover -s tests -v
 ```
 
-重建原创合成音轨另需 `numpy`，运行 `demo/mellow/build_audio.py`。音轨已随演示提供，普通复合成无需安装 numpy。
+Rebuilding the original synthesized audio with `demo/mellow/build_audio.py` additionally requires `numpy`. The demo already includes that audio, so ordinary re-rendering does not need numpy.
 
-## 运行自己的云端生成
+## Run your own cloud generation
 
-先阅读 [RunningHub 接入说明](references/runninghub.md)。密钥只从环境变量读取，**不要提交 `.env`、任务凭据或带认证参数的素材 URL**。
+Read the [RunningHub integration guide · 中文](references/runninghub.md) first. Keys are read only from environment variables. **Do not commit `.env`, task credentials, or asset URLs containing authentication parameters.**
 
 ```bash
-# 在自己的终端中安全设置 RUNNINGHUB_API_KEY
-# 默认站点为 https://www.runninghub.cn
+# Set RUNNINGHUB_API_KEY securely in your own terminal.
+# The default service host is https://www.runninghub.cn.
 
-# 下面会创建一个新的收费生成任务；先确认素材、设置与费用
+# Creates a NEW paid generation task: confirm inputs, settings, and cost first.
 python scripts/replica.py rh-model-run demo/mellow/model-job.json \
   --journal projects/my-ad/task.json
 
-# 以下只恢复查询和下载，不重新提交
+# Resume polling and download only; these do not resubmit the task.
 python scripts/replica.py rh-poll projects/my-ad/task.json --timeout 900 --interval 10
 python scripts/replica.py rh-download projects/my-ad/task.json --out projects/my-ad/raw
 ```
 
-提交前独占创建 journal，响应丢失时记录 `submission_unknown` 并停止；已有 taskId 只恢复查询。不要删除 journal 后盲目重提。当前万相参考路线有输入时长约束，脚本会提前检查。
+Before submitting, the client exclusively creates a task journal. If the submission response is lost, it records `submission_unknown` and stops. If a task ID already exists, resume polling only. Do not delete the journal and blindly resubmit. The current Wan reference route has input-duration constraints that the script checks in advance.
 
-**实网验证范围：** 两轮生成通过官方 Playground 提交；最终任务通过官方 V2 API 查询并下载。Python 提交/上传客户端有模拟传输测试，尚未完成真实自动提交全链路测试。CI 不需要密钥，也不会调用 RH。
+**Live integration coverage:** the two generations were submitted through the official Playground. The final task was queried and downloaded through the official V2 API. Python submission/upload clients have mock-transport tests; a live automatic upload-to-submission chain has not yet been completed. CI needs no key and does not call RunningHub.
 
-## 项目结构
+## Repository layout
 
 ```text
-SKILL.md                 Agent 指令
-agents/openai.yaml       Skill 展示信息
-scripts/                 媒体处理、改编约定、RH 客户端与命令入口
-references/              接入、安装、约定和来源说明
-assets/                  示例编辑计划与网页结果接回工具
-experimental/            尚未在 RH 导入运行的 ComfyUI 候选图
-demo/mellow/             成片、原始生成、主视觉和复跑材料
-docs/CASE_STUDY.md       真实广告案例、两轮实验与偏差
-tests/                   无收费调用的本地测试
+SKILL.md                 Agent instructions
+agents/openai.yaml       Skill display metadata
+scripts/                 Media processing, adaptation contracts, RH client, CLI
+references/              Integration, installation, contracts, provenance
+assets/                  Sample edit plans and browser-result handoff helper
+experimental/            ComfyUI candidate graphs not imported/run on RH
+demo/mellow/             Final video, raw footage, product image, rebuild inputs
+docs/CASE_STUDY.md       Real-ad case, two rounds, and observed deviations
+tests/                   Local tests without paid calls
 ```
 
-## 当前限制
+## Current scope
 
-- 不处理任意视频网站的下载绕过，不提供人物身份/口型/舞蹈迁移能力。
-- 生成场景不证明真实生产流程；概念商品不能借用参考广告的产地、认证、环保或销量主张。
-- 参考音轨默认不使用；有对白要求时，需要单独制作并混好音轨。
-- 商品字样、器具运动、手部和物理过程仍需审查；重要包装可用已确认图片做明确标记的落版。
-- ComfyUI 候选图位于 `experimental/`，未在平台导入实跑，不属于本次已验证路线。
-- 当前没有公开部署的独立产品网站。GitHub 是源码、安装包和演示入口。
+- No bypassing video-site download restrictions; no character identity, lip-sync, or dance transfer.
+- Generated process scenes do not verify a real manufacturing process. A concept product cannot inherit origin, certification, environmental, or sales claims from the reference ad.
+- Reference audio is not used by default. Dialogue needs a separately produced and mixed audio track.
+- Product lettering, tool movement, hands, and physical processes need review. Important packaging can use a verified product image in a clearly identified end card.
+- ComfyUI graphs in `experimental/` have not been imported and run on the platform; they are not part of the demonstrated route.
+- There is no separately deployed public product website. GitHub is the source, package, and demo entry point.
 
-## 许可证与来源
+## License and provenance
 
-原创代码和文字文档使用 [MIT License](LICENSE)。生成演示素材与第三方品牌/服务的适用范围见 [NOTICE.md](NOTICE.md)，接口参考与实现来源见 [references/provenance.md](references/provenance.md)。本项目没有取得原广告的商业素材授权，使用真实参考时请自行确认相应使用依据。
+Original code and written documentation use the [MIT License](LICENSE). See [NOTICE.md](NOTICE.md) for generated demo media and third-party brand/service scope, and [references/provenance.md](references/provenance.md) for interface and implementation sources. This project has not acquired commercial rights to the original ad; confirm the appropriate basis for using any real reference.
